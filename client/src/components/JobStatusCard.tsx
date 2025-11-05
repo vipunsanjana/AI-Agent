@@ -75,7 +75,7 @@ export const JobStatusCard = ({ job }: JobStatusCardProps) => {
       <div className="p-6">
         <div className="space-y-4">
           {jobSteps.map((step, index) => {
-            const isCompleted = job[step.key];
+            const isCompleted = !!job[step.key];
             const isCurrentStep = isJobRunning && index === currentStepIndex;
             const isStepFailed = hasFailed && index === currentStepIndex;
             const stepStatus = getStepStatus(isCompleted, isCurrentStep, isStepFailed);

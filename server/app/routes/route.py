@@ -44,6 +44,8 @@ def get_jobs_summary():
     ✅ Returns total completed and failed jobs.
     """
     try:
+        print("Fetching job summary from database...")
+
         job_summary =get_job_summary_from_summary_collection()  
         logger.info("Job summary fetched: completed=%d, failed=%d", job_summary["total_completed"], job_summary["total_failed"])
         

@@ -6,12 +6,12 @@ export const useAgentStart = () => {
   const [startError, setStartError] = useState<string | null>(null);
   const [startMessage, setStartMessage] = useState<string | null>(null);
 
-  const startAgent = async () => {
+  const startAgent = async (niche: string) => {
     setStarting(true);
     setStartError(null);
 
     try {
-      const res = await axios.post("http://localhost:8000/agent/start");
+      const res = await axios.post("http://localhost:8000/agent/start", { niche });
       setStartMessage(res.data.message || "Agent started successfully!");
     } catch (err: any) {
       console.error("Failed to start agent:", err);

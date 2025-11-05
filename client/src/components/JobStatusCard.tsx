@@ -1,4 +1,11 @@
-import { CheckCircle2, Circle, XCircle, Loader2, ExternalLink, Clock } from 'lucide-react';
+import {
+  CheckCircle2,
+  Circle,
+  XCircle,
+  Loader2,
+  ExternalLink,
+  Clock,
+} from 'lucide-react';
 import { CronJobStatus, JobStep } from '../types';
 
 interface JobStatusCardProps {
@@ -51,27 +58,33 @@ export const JobStatusCard = ({ job }: JobStatusCardProps) => {
     }).format(date);
   };
 
-  const currentStepIndex = jobSteps.findIndex(step => !job[step.key]);
+  const currentStepIndex = jobSteps.findIndex((step) => !job[step.key]);
   const isJobRunning = job.status === 'running';
   const hasFailed = job.status === 'failed';
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden transition-all duration-200 hover:shadow-md">
+      {/* Header */}
       <div className="bg-gradient-to-r from-slate-50 to-slate-100 px-6 py-4 border-b border-slate-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Clock className="w-5 h-5 text-slate-600" />
             <div>
-              <h3 className="font-semibold text-slate-900">Job #{job.id.slice(0, 8)}</h3>
+              <h3 className="font-semibold text-slate-900">
+                Job #{job.id.slice(0, 8)}
+              </h3>
               <p className="text-sm text-slate-600">{formatDate(job.created_at)}</p>
             </div>
           </div>
-          <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(job.status)}`}>
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(job.status)}`}
+          >
             {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
           </span>
         </div>
       </div>
 
+      {/* Steps */}
       <div className="p-6">
         <div className="space-y-4">
           {jobSteps.map((step, index) => {
@@ -81,18 +94,29 @@ export const JobStatusCard = ({ job }: JobStatusCardProps) => {
             const stepStatus = getStepStatus(isCompleted, isCurrentStep, isStepFailed);
 
             return (
-              <div key={step.key} className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div
+                key={step.key}
+                className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200"
+              >
                 <div className="flex-shrink-0">
                   {getStepIcon(isCompleted, isCurrentStep, isStepFailed)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className={`font-semibold text-lg ${isCompleted ? 'text-slate-900' : 'text-slate-700'}`}>
+                  <p
+                    className={`font-semibold text-lg ${
+                      isCompleted ? 'text-slate-900' : 'text-slate-700'
+                    }`}
+                  >
                     {step.label}
                   </p>
-                  <p className="text-sm text-slate-600 mt-0.5">{step.description}</p>
+                  <p className="text-sm text-slate-600 mt-0.5">
+                    {step.description}
+                  </p>
                 </div>
                 <div className="flex-shrink-0">
-                  <span className={`px-3 py-1.5 rounded-lg text-sm font-semibold border ${stepStatus.color}`}>
+                  <span
+                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold border ${stepStatus.color}`}
+                  >
                     {stepStatus.text}
                   </span>
                 </div>
@@ -101,6 +125,7 @@ export const JobStatusCard = ({ job }: JobStatusCardProps) => {
           })}
         </div>
 
+        {/* Error message */}
         {job.error_message && (
           <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-sm font-medium text-red-800">Error Message:</p>
@@ -108,6 +133,7 @@ export const JobStatusCard = ({ job }: JobStatusCardProps) => {
           </div>
         )}
 
+        {/* LinkedIn link */}
         {job.linkedin_post_url && job.uploaded_to_linkedin && (
           <div className="mt-4 pt-4 border-t border-slate-200">
             <a

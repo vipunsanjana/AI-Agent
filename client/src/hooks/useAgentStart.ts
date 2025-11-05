@@ -11,7 +11,7 @@ export const useAgentStart = () => {
     setStartError(null);
 
     try {
-      const res = await axios.get("http://localhost:8000/agent/start");
+      const res = await axios.post("http://localhost:8000/agent/start");
       setStartMessage(res.data.message || "Agent started successfully!");
     } catch (err: any) {
       console.error("Failed to start agent:", err);

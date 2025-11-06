@@ -41,26 +41,51 @@ Software Engineer | AI & Automation Enthusiast
 ## 📁 Project Structure
 
 ```
-
 AutoLinkedAI/
 │
-├── app/
-│   ├── main.py                   # Entry point for running the workflow
-│   ├── models/
-│   │   └── agent.py              # AgentState model (Pydantic)
-│   ├── services/
-│   │   ├── agent_graph.py        # LangGraph workflow builder
-│   │   ├── linkedin_service.py   # LinkedIn posting utility
-│   │   ├── gemini_service.py     # Image generation utility
-│   │   ├── mongodb_service.py    # MongoDB saving logic
-│   ├── utils/
-│   │   ├── config.py             # API keys and constants
-│   │   └── logger.py             # Custom logger setup
-│   └── **init**.py
+├── client/                               # 💻 Frontend (React + Vite + TypeScript + Tailwind CSS)
+│   ├── dist/                             # Compiled production build files
+│   ├── node_modules/                     # Frontend dependencies
+│   ├── src/                              # Application source code
+│   │   ├── assets/                       # Images, icons, and static assets
+│   │   ├── components/                   # Reusable UI components
+│   │   ├── pages/                        # Page-level components
+│   │   ├── App.tsx                       # Main app component
+│   │   └── main.tsx                      # Entry point for React app
+│   ├── .env                              # Client environment variables (e.g., VITE_API_URL)
+│   ├── .gitignore                        # Git ignore rules for client
+│   ├── eslint.config.js                  # ESLint configuration for linting
+│   ├── index.html                        # Root HTML template
+│   ├── package-lock.json                 # Locked dependency tree
+│   ├── package.json                      # Project metadata and scripts
+│   ├── postcss.config.js                 # PostCSS configuration
+│   ├── tailwind.config.js                # Tailwind CSS configuration
+│   ├── tsconfig.app.json                 # TypeScript configuration (App scope)
+│   ├── tsconfig.json                     # Base TypeScript configuration
+│   ├── tsconfig.node.json                # TypeScript config for Node/Vite environment
+│   └── vite.config.ts                    # Vite build and dev configuration
 │
-├── .env                          # Environment variables
-├── requirements.txt              # Python dependencies
-└── README.md                     # Documentation
+├── server/                               # ⚙️ Backend (FastAPI + LangGraph + Gemini + MongoDB + LinkedIn API)
+│   ├── app/
+│   │   ├── main.py                       # FastAPI application entry point
+│   │   ├── models/
+│   │   │   └── agent.py                  # AgentState and Post models (Pydantic)
+│   │   ├── services/
+│   │   │   ├── agent_graph.py            # LangGraph workflow orchestration
+│   │   │   ├── linkedin_service.py       # LinkedIn automation and posting logic
+│   │   │   ├── gemini_service.py         # Google Gemini image/content generation
+│   │   │   └── mongodb_service.py        # MongoDB persistence and retrieval
+│   │   ├── utils/
+│   │   │   ├── config.py                 # Configuration (API keys, constants)
+│   │   │   └── logger.py                 # Centralized custom logger
+│   │   └── __init__.py                   # Marks directory as a package
+│   ├── logs/                             # Application log files
+│   ├── venv/                             # Python virtual environment
+│   ├── .env                              # Server environment variables (Mongo URI, API keys, etc.)
+│   ├── requirements.txt                  # Python dependency list
+│   └── .gitignore                        # Git ignore rules for server
+│
+└── README.md                             # 📘 Project documentation
 
 ````
 

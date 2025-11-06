@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { CronJobStatus } from "../types";
 
+const API_URL = import.meta.env.VITE_API_URL
+
 export const useCronJobStatus = (userId: string | null) => {
   const [jobs, setJobs] = useState<CronJobStatus[]>([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +17,7 @@ export const useCronJobStatus = (userId: string | null) => {
       setError(null);
 
       try {
-        const res = await axios.get(`http://localhost:8000/agent/summary`);
+        const res = await axios.get(`${API_URL}/agent/summary`);
         const { total_completed, total_failed } = res.data;
 
         // Convert totals into array of "summary jobs"

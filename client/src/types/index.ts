@@ -20,9 +20,14 @@ export interface CronJobStatus {
   error_message?: string;
 }
 
-
 export interface JobStep {
   key: keyof Pick<CronJobStatus, 'user_logged' | 'image_generated' | 'content_generated' | 'db_saved' | 'uploaded_to_linkedin'>;
   label: string;
   description: string;
+}
+
+export interface AgentStartResponse {
+  success: boolean;
+  status: "completed" | "failed";
+  message: string;
 }

@@ -14,6 +14,9 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MONGO_URI = os.getenv("MONGO_URI")
 DB_NAME = os.getenv("DB_NAME")
 DB_COLLECTION_NAME = os.getenv("DB_COLLECTION_NAME")
+TOKEN_URL = os.getenv("TOKEN_URL")
+USERINFO_URL = os.getenv("USERINFO_URL")
+REDIRECT_URI = os.getenv("REDIRECT_URI")
 
 # === Check for missing environment variables ===
 required_vars = [
@@ -25,6 +28,9 @@ required_vars = [
     "MONGO_URI",
     "DB_NAME",
     "DB_COLLECTION_NAME",
+    "TOKEN_URL",
+    "USERINFO_URL",
+    "REDIRECT_URI",
 ]
 
 missing_vars = [var for var in required_vars if not os.getenv(var)]

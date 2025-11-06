@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useCronJobStatus } from '../hooks/useCronJobStatus';
 import { useAgentStart } from '../hooks/useAgentStart';
@@ -14,12 +15,52 @@ import {
 
 export const Dashboard = () => {
   const { user, signOut } = useAuth();
+
+  // Fetch jobs from backend
   const { jobs, loading, error } = useCronJobStatus(user?.id || null);
+
+  // Handle Start Agent button
   const { startAgent, starting, startError, startMessage } = useAgentStart();
 
-  const completedJobs = jobs.filter((job) => job.status === 'completed').length;
-  const runningJobs = jobs.filter((job) => job.status === 'running').length;
-  const failedJobs = jobs.filter((job) => job.status === 'failed').length;
+  // Local UI counters for dynamic job tracking
+  const [runningJobs, setRunningJobs] = useState(0);
+  const [completedJobs, setCompletedJobs] = useState(0);
+  const [failedJobs, setFailedJobs] = useState(0);
+
+  // --- Sync counters from backend ---
+  useEffect(() => {
+    if (jobs && jobs.length > 0) {
+      setCompletedJobs(jobs.filter((j) => j.status === 'completed').length);
+      setRunningJobs(jobs.filter((j) => j.status === 'running').length);
+      setFailedJobs(jobs.filter((j) => j.status === 'failed').length);
+    }
+  }, [jobs]);
+
+  // ==============================================================
+  // 🔹 Handle Agent Start
+  //    1️⃣ Set runningJobs = 1 immediately
+  //    2️⃣ Trigger backend automation
+  //    3️⃣ When done → update job counters accordingly
+  // ==============================================================
+  const handleStartAgent = async () => {
+    try {
+      setRunningJobs(1); // Start indicator immediately
+      const response = await startAgent('AI Content');
+
+      // Simulate backend job completion
+      if (response?.success || response?.status === 'completed') {
+        setRunningJobs(0);
+        setCompletedJobs((prev) => prev + 1);
+      } else {
+        setRunningJobs(0);
+        setFailedJobs((prev) => prev + 1);
+      }
+    } catch (err) {
+      console.error('❌ Agent start failed:', err);
+      setRunningJobs(0);
+      setFailedJobs((prev) => prev + 1);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
@@ -65,19 +106,20 @@ export const Dashboard = () => {
             </p>
           </div>
 
+          {/* Start Agent Button */}
           <button
-            onClick={() => startAgent("AI Content")}
-            disabled={starting}
+            onClick={handleStartAgent}
+            disabled={starting || runningJobs > 0}
             className={`mt-4 sm:mt-0 inline-flex items-center gap-2 px-5 py-2 rounded-xl font-semibold text-white transition-all shadow-md ${
-              starting
+              starting || runningJobs > 0
                 ? 'bg-blue-400 cursor-not-allowed'
                 : 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600'
             }`}
           >
-            {starting ? (
+            {starting || runningJobs > 0 ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                Starting Agent...
+                {runningJobs > 0 ? 'Running Job...' : 'Starting Agent...'}
               </>
             ) : (
               <>
@@ -124,7 +166,7 @@ export const Dashboard = () => {
           <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl shadow-lg p-6 text-white">
             <div className="flex items-center justify-between mb-4">
               <TrendingUp className="w-8 h-8 opacity-80" />
-              <span className="text-3xl font-bold">{jobs.length}</span>
+              <span className="text-3xl font-bold">{completedJobs + failedJobs}</span>
             </div>
             <h3 className="font-semibold text-slate-50 mb-1">Total Jobs</h3>
             <p className="text-sm text-slate-100 opacity-90">{failedJobs} failed attempts</p>
